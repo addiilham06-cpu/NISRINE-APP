@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamed Addi World</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#020303;
+ color:#00ff66;
+ font-family:monospace;
+ overflow:hidden;
+}
+
+canvas{
+ position:fixed;
+ inset:0;
+ z-index:-1;
+}
+
+.container{
+ position:absolute;
+ top:50%;
+ left:50%;
+ transform:translate(-50%,-50%);
+ width:92%;
+ max-width:500px;
+ padding:25px 18px;
+ text-align:center;
+ background:rgba(3,12,8,.96);
+ border:1px solid #00ff66;
+ border-radius:8px;
+ box-shadow:0 0 30px #00ff6644;
+}
+
+h1{text-shadow:0 0 15px #00ff66}
+
+button{
+ padding:14px 45px;
+ background:#00ff66;
+ color:black;
+ border:0;
+ border-radius:4px;
+ font-size:18px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+#hack{display:none}
+
+#logs{
+ text-align:left;
+ font-size:12px;
+ line-height:2;
+ height:180px;
+ overflow:hidden;
+ color:#00ff66;
+}
+
+.progress{
+ height:10px;
+ background:#17251c;
+ margin:15px 0;
+ border-radius:10px;
+ overflow:hidden;
+}
+
+#bar{
+ height:100%;
+ width:0%;
+ background:#00ff66;
+ box-shadow:0 0 15px #00ff66;
+ transition:width .5s;
+}
+
+#percent{font-size:28px}
+
+.error{
+ position:fixed;
+ z-index:10;
+ width:245px;
+ background:#100808;
+ border:2px solid red;
+ color:white;
+ padding:12px;
+ box-shadow:0 0 20px red;
+ animation:pop .2s;
+ font-size:12px;
+}
+
+@keyframes pop{
+ from{transform:scale(.2)}
+ to{transform:scale(1)}
+}
+
+#final{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#050000;
+ z-index:100;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+ text-align:center;
+ padding:20px;
+}
+
+#final h1{
+ color:red;
+ font-size:30px;
+ text-shadow:0 0 20px red;
+}
+
+#final h2{color:white}
+
+.warning{
+ color:red;
+ font-size:14px;
+ animation:blink .7s infinite;
+}
+
+@keyframes blink{
+ 50%{opacity:.2}
+}
+
+.scan{
+ color:#aaa;
+ font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container" id="welcome">
+<h1>MOHAMED ADDI</h1>
+<h1>WORLD</h1>
+<p>☠ SYSTEM ACCESS TERMINAL ☠</p>
+<p>ADVANCED SECURITY SIMULATION</p>
+<p class="warning">⚠ UNAUTHORIZED ACCESS SIMULATION ⚠</p>
+<button onclick="start()">START</button>
+</div>
+
+<div class="container" id="hack">
+<h2 style="color:red">☠ SYSTEM BREACH ☠</h2>
+<p class="scan">SIMULATED SYSTEM SCAN IN PROGRESS...</p>
+<div id="logs"></div>
+<div class="progress"><div id="bar"></div></div>
+<h2 id="percent">0%</h2>
+<p class="warning">⚠ CRITICAL SECURITY ALERT ⚠</p>
+<p class="scan">PLEASE WAIT...</p>
+</div>
+
+<div id="final">
+<div style="font-size:75px">🔒</div>
+<h1>⚠ SYSTEM COMPROMISED ⚠</h1>
+<h2>تم سرقة ملفاتك وصورك!</h2>
+<p style="color:red;font-weight:bold">ALL FILES HAVE BEEN STOLEN</p>
+<p style="color:#aaa">Your system is no longer secure...</p>
+
+<div style="border:1px solid red;padding:15px;margin:15px;color:#ff4444;font-size:13px">
+SIMULATION COMPLETE<br>
+NO REAL DATA ACCESSED
+</div>
+
+<h2 style="color:#00ff66">MOHAMED ADDI'S WORLD</h2>
+<button onclick="location.reload()">RESTART</button>
+</div>
+
+<script>
+
+// MATRIX BACKGROUND
+
+const c=document.getElementById("matrix");
+const x=c.getContext("2d");
+
+function resize(){
+ c.width=innerWidth;
+ c.height=innerHeight;
+}
+
+resize();
+window.addEventListener("resize",resize);
+
+let drops=Array(Math.floor(c.width/15)).fill(1);
+
+setInterval(()=>{
+ x.fillStyle="rgba(0,0,0,.12)";
+ x.fillRect(0,0,c.width,c.height);
+ x.fillStyle="#00ff66";
+ x.font="15px monospace";
+
+ drops.forEach((y,i)=>{
+  x.fillText(Math.random()>.5?"01":"10",i*15,y*15);
+  if(y*15>c.height && Math.random()>.95)drops[i]=0;
+  drops[i]++;
+ });
+},50);
+
+
+// SIMULATED SCAN
+
+const messages=[
+"> Initializing security simulation...",
+"> Connecting to simulated server...",
+"> Scanning network...",
+"> Analyzing system...",
+"> Checking security protocols...",
+"> WARNING: Suspicious activity detected!",
+"> Simulating firewall breach...",
+"> Scanning image directory...",
+"> Scanning document directory...",
+"> Simulating file transfer...",
+"> Generating security report...",
+"> SYSTEM COMPROMISED!"
+];
+
+function start(){
+
+ document.getElementById("welcome").style.display="none";
+ document.getElementById("hack").style.display="block";
+
+ let i=0;
+
+ const logs=document.getElementById("logs");
+ const bar=document.getElementById("bar");
+ const percent=document.getElementById("percent");
+
+ const timer=setInterval(()=>{
+
+  if(i<messages.length){
+
+   logs.innerHTML+=messages[i]+"<br>";
+   logs.scrollTop=logs.scrollHeight;
+
+   let value=Math.round((i+1)/messages.length*100);
+
+   bar.style.width=value+"%";
+   percent.textContent=value+"%";
+
+   if(i%2===0)popup();
+
+   i++;
+
+  }else{
+
+   clearInterval(timer);
+
+   setTimeout(()=>{
+    document.querySelectorAll(".error").forEach(e=>e.remove());
+    document.getElementById("final").style.display="flex";
+   },1800);
+
+  }
+
+ },850);
+
+}
+
+
+// FOUR FAST ALERTS
+
+function popup(){
+
+ for(let i=0;i<4;i++){
+
+  setTimeout(()=>{
+
+   const e=document.createElement("div");
+
+   e.className="error";
+
+   e.innerHTML=`
+   <b style="color:red">⚠ CRITICAL SYSTEM ERROR</b>
+   <p>Unauthorized access detected!</p>
+   <p>ERROR CODE: 0x${Math.floor(Math.random()*99999)}</p>
+   <b style="color:red">SECURITY WARNING!</b>
+   `;
+
+   e.style.left=Math.random()*55+"vw";
+   e.style.top=Math.random()*70+"vh";
+
+   document.body.appendChild(e);
+
+   setTimeout(()=>e.remove(),1000);
+
+  },i*1);
+
+ }
+
+}
+
+</script>
+
+</body>
+</html>
